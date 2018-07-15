@@ -15,6 +15,7 @@ import java.time.format.DateTimeFormatter
 class CbrCrawlingService {
 
     def crawl() {
+        Thread.sleep(10000) // todo remove it
         LocalDate curr = LocalDate.now();
         for (int i = 0; i < 31; i++) {
             def crawlStatusList = CbrCrawlStatus.where {

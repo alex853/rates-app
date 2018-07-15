@@ -1,14 +1,11 @@
 package rates.app
 
+
 import java.time.LocalDate
 
 class DailyRatesService {
 
-    CbrCrawlingService cbrCrawlingService
-
     def lastMonth() {
-        cbrCrawlingService.crawl()
-
         def usdData = DailyRate.where {
             currency == "USD"
             // todo limit 30 days
