@@ -1,13 +1,14 @@
 package rates.app
 
-import grails.gorm.transactions.Transactional
-
 import java.time.LocalDate
 
-@Transactional
 class DailyRatesService {
 
+    CbrCrawlingService cbrCrawlingService
+
     def lastMonth() {
+        cbrCrawlingService.crawl()
+
         def usdData = DailyRate.where {
             currency == "USD"
             // todo limit 30 days

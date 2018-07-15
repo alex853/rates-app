@@ -6,12 +6,12 @@ import org.jsoup.nodes.Document
 import org.jsoup.nodes.Element
 import org.jsoup.select.Elements
 
+import java.sql.Timestamp
 import java.text.DecimalFormat
 import java.text.DecimalFormatSymbols
 import java.time.LocalDate
 import java.time.format.DateTimeFormatter
 
-@Transactional
 class CbrCrawlingService {
 
     def crawl() {
@@ -26,6 +26,7 @@ class CbrCrawlingService {
 
             if (needToCrawl) {
                 def DailyRateSet set = crawlDate(curr)
+                saveRates(curr, crawlStatus, set)
             }
 
             curr = curr.minusDays(1)
@@ -35,6 +36,8 @@ class CbrCrawlingService {
     def DateTimeFormatter urlDateFormatter = DateTimeFormatter.ofPattern("dd.MM.uuuu")
 
     def crawlDate(LocalDate date) {
+        log.info("Crawling CBR data for " + date)
+
         def url = "https://www.cbr.ru/currency_base/daily/?date_req=" + urlDateFormatter.format(date)
         def content = new URL(url).getText()
 
@@ -70,5 +73,32 @@ class CbrCrawlingService {
         df.setDecimalFormatSymbols(dfs)
         s = s.replace(',', '.')
         df.parse(s)
+    }
+
+    @Transactional
+    def saveRates(LocalDate date, CbrCrawlStatus cbrCrawlStatus, DailyRateSet dailyRateSet) {
+        def DailyRate usdRate = getOrCreateDailyRate("USD", date)
+        def DailyRate eurRate = getOrCreateDailyRate("EUR", date)
+
+        usdRate.rate = dailyRateSet.usdRate
+        eurRate.rate = dailyRateSet.eurRate
+
+        usdRate.save(flush: true)
+        eurRate.save(flush: true)
+
+        if (cbrCrawlStatus == null) {
+            cbrCrawlStatus = new CbrCrawlStatus(date: date)
+        }
+        cbrCrawlStatus.lastCrawlDt = new Timestamp(System.currentTimeMillis())
+        cbrCrawlStatus.save(flush: true)
+    }
+
+    private DailyRate getOrCreateDailyRate(String currency, LocalDate date) {
+        def list = DailyRate.where { currency == currency && date == date }.list()
+        def rate = !list.empty ? list.get(0) : null
+        if (rate == null) {
+            rate = new DailyRate(date: date, currency: currency)
+        }
+        rate
     }
 }
