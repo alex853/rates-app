@@ -6,21 +6,23 @@ import java.time.LocalDate
 class DailyRatesService {
 
     def lastMonth() {
+        def LocalDate today = LocalDate.now()
+        def LocalDate limit = today.minusDays(31)
+
         def usdData = DailyRate.where {
-            currency == "USD"
-            // todo limit 30 days
+            currency == "USD" && date >= limit
         }.order("date", "desc").list()
 
         def eurData = DailyRate.where {
-            currency == "EUR"
-            // todo limit 30 days
+            currency == "EUR" && date >= limit
         }.order("date", "desc").list()
 
         def usdIndex = 0
         def eurIndex = 0
 
         def sets = []
-        LocalDate curr = LocalDate.now();
+
+        LocalDate curr = today;
         for (int i = 0; i < 31; i++) {
             DailyRateSet set = new DailyRateSet(date: curr)
 

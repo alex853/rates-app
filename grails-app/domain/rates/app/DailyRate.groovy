@@ -11,7 +11,6 @@ class DailyRate implements GormEntity<DailyRate> {
     Double rate
 
     static constraints = {
-        // todo
         currency inList: ["EUR", "USD"]
         date blank: false
         rate min: 0.0D
