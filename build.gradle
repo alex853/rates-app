@@ -61,6 +61,7 @@ dependencies {
 
     compile 'postgresql:postgresql:9.1-901-1.jdbc4'
     compile "org.hibernate:hibernate-java8:5.1.5.Final"
+    compile 'org.jsoup:jsoup:1.11.3'
 }
 
 bootRun {
