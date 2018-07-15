@@ -60,6 +60,7 @@ dependencies {
     testRuntime "net.sourceforge.htmlunit:htmlunit:2.18"
 
     compile 'postgresql:postgresql:9.1-901-1.jdbc4'
+    compile "org.hibernate:hibernate-java8:5.1.5.Final"
 }
 
 bootRun {

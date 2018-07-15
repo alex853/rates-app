@@ -2,10 +2,12 @@ package rates.app
 
 import org.grails.datastore.gorm.GormEntity
 
+import java.time.LocalDate
+
 class DailyRate implements GormEntity<DailyRate> {
 
     String currency
-    Date date
+    LocalDate date
     Double rate
 
     static constraints = {

@@ -1,7 +1,9 @@
 package rates.app
 
+import java.time.LocalDate
+
 class DailyRateSet {
-    Date date
+    LocalDate date
     Double usdRate
     Double eurRate
 }
