@@ -15,15 +15,15 @@ import java.time.format.DateTimeFormatter
 class CbrCrawlingService {
 
     def crawl() {
-        Thread.sleep(10000) // todo remove it
-        LocalDate curr = LocalDate.now();
+        def LocalDate today = LocalDate.now()
+        LocalDate curr = today;
         for (int i = 0; i < 31; i++) {
             def crawlStatusList = CbrCrawlStatus.where {
                 date == curr
             }.list()
 
             def CbrCrawlStatus crawlStatus = !crawlStatusList.empty ? crawlStatusList.get(0) : null
-            def needToCrawl = (crawlStatus == null) || (crawlStatus.date == curr && crawlStatus.lastCrawlDt.getTime() + 3600000 < System.currentTimeMillis())
+            def needToCrawl = (crawlStatus == null) || (crawlStatus.date == today && crawlStatus.lastCrawlDt.getTime() + 3600000L < System.currentTimeMillis())
 
             if (needToCrawl) {
                 def DailyRateSet set = crawlDate(curr)

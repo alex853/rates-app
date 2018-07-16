@@ -9,7 +9,7 @@ class MainController {
     ExecutorService executor = Executors.newSingleThreadExecutor()
 
     def index() {
-        executor.execute { // todo how to not create multiple tasks?
+        executor.execute {
             CbrCrawlStatus.withNewSession {session ->
                 cbrCrawlingService.crawl()
             }
