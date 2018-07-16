@@ -28,8 +28,8 @@
                 <g:each in="${dailyRateSets}">
                     <tr>
                         <th scope="row">${it.date}</th>
-                        <td>${it.usdRate}</td>
-                        <td>${it.eurRate}</td>
+                        <td style="${it.usdRate == usdMinRate ? 'background-color: yellow;' : (it.usdRate == usdMaxRate ? 'background-color: pink;' : '')}">${it.usdRate}</td>
+                        <td style="${it.eurRate == eurMinRate ? 'background-color: yellow;' : (it.eurRate == eurMaxRate ? 'background-color: pink;' : '')}">${it.eurRate}</td>
                     </tr>
                 </g:each>
                 </tbody>
