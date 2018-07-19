@@ -10,9 +10,9 @@ grails:
             events: false
 info:
     app:
-        name: '@info.app.name@'
-        version: '@info.app.version@'
-        grailsVersion: '@info.app.grailsVersion@'
+        name: 'rates-app'
+        version: '1.0-SNAPSHOT'
+        grailsVersion: '3.3.6'
 spring:
     main:
         banner-mode: "off"
